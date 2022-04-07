@@ -2,7 +2,7 @@
   "name": "@nebula.gl/edit-modes",
   "description": "GeoJSON editing modes for nebula.gl",
   "license": "MIT",
-  "version": "1.0.2-alpha.1",
+  "version": "1.0.2-alpha.2",
   "author": "Georgios Karnas <georgios@uber.com>",
   "repository": {
     "type": "git",
@@ -67,6 +67,7 @@
     "@turf/helpers": ">=4.0.0",
     "@turf/intersect": ">=4.0.0",
     "@turf/line-intersect": ">=4.0.0",
+    "@turf/midpoint": ">=4.0.0",
     "@turf/nearest-point-on-line": ">=4.0.0",
     "@turf/point-to-line-distance": ">=4.0.0",
     "@turf/polygon-to-line": ">=4.0.0",

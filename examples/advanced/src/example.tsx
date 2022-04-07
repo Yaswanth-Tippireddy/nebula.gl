@@ -26,6 +26,7 @@ import {
   DrawLineStringMode,
   DrawPolygonMode,
   DrawRectangleMode,
+  DrawSquareMode,
   DrawRectangleFromCenterMode,
   DrawSquareFromCenterMode,
   DrawCircleByDiameterMode,
@@ -88,7 +89,10 @@ const ALL_MODES: any = [
     category: 'View',
     modes: [
       { label: 'View', mode: ViewMode },
-      { label: 'Measure Distance', mode: MeasureDistanceMode },
+      {
+        label: 'Measure Distance',
+        mode: MeasureDistanceMode,
+      },
       { label: 'Measure Area', mode: MeasureAreaMode },
       { label: 'Measure Angle', mode: MeasureAngleMode },
     ],
@@ -104,6 +108,7 @@ const ALL_MODES: any = [
       { label: 'Draw Rectangle', mode: DrawRectangleMode },
       { label: 'Draw Rectangle From Center', mode: DrawRectangleFromCenterMode },
       { label: 'Draw Rectangle Using 3 Points', mode: DrawRectangleUsingThreePointsMode },
+      { label: 'Draw Square', mode: DrawSquareMode },
       { label: 'Draw Square From Center', mode: DrawSquareFromCenterMode },
       { label: 'Draw Circle From Center', mode: DrawCircleFromCenterMode },
       { label: 'Draw Circle By Diameter', mode: DrawCircleByDiameterMode },
@@ -140,6 +145,7 @@ const POLYGON_DRAWING_MODES = [
   DrawRectangleMode,
   DrawRectangleFromCenterMode,
   DrawRectangleUsingThreePointsMode,
+  DrawSquareMode,
   DrawSquareFromCenterMode,
   DrawCircleFromCenterMode,
   DrawCircleByDiameterMode,
@@ -149,6 +155,7 @@ const POLYGON_DRAWING_MODES = [
 
 const TWO_CLICK_POLYGON_MODES = [
   DrawRectangleMode,
+  DrawSquareMode,
   DrawRectangleFromCenterMode,
   DrawSquareFromCenterMode,
   DrawCircleFromCenterMode,
@@ -599,6 +606,45 @@ export default class Example extends React.Component<
             <option value="radians">radians</option>
           </select>
         </ToolboxControl>
+
+        <ToolboxTitle>Center Tooltips on Line</ToolboxTitle>
+        <ToolboxControl>
+          <input
+            type="checkbox"
+            checked={Boolean(this.state.modeConfig && this.state.modeConfig.centerTooltipsOnLine)}
+            onChange={(event) => {
+              const modeConfig = {
+                ...this.state.modeConfig,
+                centerTooltipsOnLine: Boolean(event.target.checked),
+              };
+              this.setState({ modeConfig });
+            }}
+          />
+        </ToolboxControl>
+      </ToolboxRow>
+    );
+  }
+
+  _renderDrawPolygonModeControls() {
+    return (
+      <ToolboxRow key="draw-polygon">
+        <ToolboxTitle>Prevent overlapping lines</ToolboxTitle>
+        <ToolboxControl>
+          <input
+            type="checkbox"
+            checked={Boolean(
+              this.state.modeConfig && this.state.modeConfig.preventOverlappingLines
+            )}
+            onChange={(event) =>
+              this.setState({
+                modeConfig: {
+                  ...(this.state.modeConfig || {}),
+                  preventOverlappingLines: Boolean(event.target.checked),
+                },
+              })
+            }
+          />
+        </ToolboxControl>
       </ToolboxRow>
     );
   }
@@ -973,7 +1019,7 @@ export default class Example extends React.Component<
       _subLayerProps = Object.assign(_subLayerProps, {
         geojson: {
           _subLayerProps: {
-            'line-strings': {
+            linestrings: {
               type: PathMarkerLayer,
               getMarkerColor: (x) => [255, 255, 255, 255],
               sizeScale: 1500,
